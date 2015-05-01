@@ -8,17 +8,16 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.UIManager;
 
 public class Launcher extends JFrame {
 
     private final JMenuBar menubar = new JMenuBar();
-    private static final String VERSION = "v1.5.0";
-    private static final String DATE_LAST_MODIFIED = "Freitag, 06.03.2015";
+    private static final String VERSION = "1.5.1";
+    private static final String DATE_LAST_MODIFIED = "Donnerstag, 30.04.2015";
     public static final Color FOREGROUND = new Color(0, 96, 96);
     private static final Color BACKGROUND = new Color(135, 235, 80);
-    public static Font FONT_BIG = new Font("Sanuk Pro", Font.PLAIN, 15);
-    public static Font FONT_SMALL = new Font("Sanuk Pro", Font.PLAIN, 14);
+    public static Font FONT_BIG = new Font("SanukPro", Font.PLAIN, 15);
+    public static Font FONT_SMALL = new Font("SanukPro", Font.PLAIN, 14);
     private static Launcher instance = null;
     public final LauncherListener AL = new LauncherListener(this);
     //Menupunkte - Toolbar
@@ -127,9 +126,7 @@ public class Launcher extends JFrame {
         m3image_gimp.addCommand("C:\\Program Files\\GIMP 2\\bin\\gimp-2.6.exe");
         launcher.setIconImage(logo);
         launcher.addWindowListener(new WindowListener());
-        launcher.getContentPane().setBackground(UIManager.getColor("menu"));
         launcher.setJMenuBar(this.menubar);
-        launcher.setBackground(UIManager.getColor("menu"));
         startupLauncher(minimized);
     }
 
@@ -144,7 +141,7 @@ public class Launcher extends JFrame {
     }
 
     private void startupLauncher(boolean minimized) {
-        launcher.setSize(775, 23);
+        launcher.setSize(775, 20);
         launcher.setLocation(0, 0);
         launcher.setResizable(false);
         launcher.setUndecorated(true);
