@@ -7,6 +7,7 @@ public class Run {
 
     /**
      * Runs Commands on the Computer
+     *
      * @param mode See 'RunMode'
      * @param command The command witch sould executed
      * @param last Is this command the last?
@@ -27,33 +28,21 @@ public class Run {
                 }
             case IEXPLORE:
                 try {
-                    runtime.exec("C:\\Program Files (x86)\\Internet Explorer\\iexplore.exe \"" + command + "\"");
-                } catch (IOException ex1) {
-                    try {
-                        runtime.exec("C:\\Program Files\\Internet Explorer\\iexplore.exe \"" + command + "\"");
-                    } catch (IOException ex2) {
-                        try {
-                            runtime.exec("C:\\Programme\\Internet Explorer\\iexplore.exe \"" + command + "\"");
-                        } catch (IOException ex3) {
-                            new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
-                            return false;
-                        }
-                    }
+                    runtime.exec(System.getenv("PROGRAMFILES") + "\\Internet Explorer\\iexplore.exe " + command);
+                    return true;
+                } catch (IOException ex) {
+                    new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
+                    return false;
                 }
-                return true;
             case OPERA:
                 try {
-                    runtime.exec("C:\\Programme\\Opera\\launcher.exe -newtab " + command);
+                    runtime.exec(System.getenv("PROGRAMFILES") + "\\Opera\\launcher.exe -newtab " + command);
                 } catch (IOException ex1) {
                     try {
-                        runtime.exec("C:\\Program Files (x86)\\Opera\\launcher.exe -newtab " + command);
+                        runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe -newtab " + command);
                     } catch (IOException ex2) {
-                        try {
-                            runtime.exec("C:\\Program Files (x86)\\Opera\\opera.exe -newtab " + command);
-                        } catch (IOException ex3) {
-                            new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
-                            return false;
-                        }
+                        new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
+                        return false;
                     }
                 }
                 return true;
@@ -87,13 +76,13 @@ public class Run {
                 }
             case MSOFFICE:
                 try {
-                    runtime.exec("C:\\Program Files (x86)\\Microsoft Office\\Office\\" + command);
+                    runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Microsoft Office\\Office\\" + command);
                 } catch (IOException ex1) {
                     try {
-                        runtime.exec("C:\\Program Files (x86)\\Microsoft Office\\Office14\\" + command);
+                        runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Microsoft Office\\Office14\\" + command);
                     } catch (IOException ex2) {
                         try {
-                            runtime.exec("C:\\Programme\\Microsoft Office\\Office\\" + command);
+                            runtime.exec(System.getenv("PROGRAMFILES") + "\\Microsoft Office\\Office\\" + command);
                         } catch (IOException ex3) {
                             new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
                             return false;
@@ -103,29 +92,13 @@ public class Run {
                 return true;
             case OPENOFFICE:
                 try {
-                    Runtime.getRuntime().exec("C:\\Program Files (x86)\\program\\" + command);
+                    Runtime.getRuntime().exec(System.getenv("PROGRAMFILES") + "\\OpenOffice 4\\program\\" + command);
                 } catch (IOException ex1) {
                     try {
-                        Runtime.getRuntime().exec("D:\\Programme\\OpenOffice.org 3\\program\\" + command);
+                        Runtime.getRuntime().exec(System.getenv("PROGRAMFILES") + " (x86)\\OpenOffice 4\\program\\" + command);
                     } catch (IOException ex2) {
-                        try {
-                            Runtime.getRuntime().exec("C:\\Programme\\OpenOffice 4\\program\\" + command);
-                        } catch (IOException ex3) {
-                            try {
-                                Runtime.getRuntime().exec("C:\\Programme\\program\\" + command);
-                            } catch (IOException ex4) {
-                                try {
-                                    Runtime.getRuntime().exec("C:\\Program Files (x86)\\OpenOffice 4\\program\\" + command);
-                                } catch (IOException ex5) {
-                                    try {
-                                        Runtime.getRuntime().exec("C:\\Programme\\OpenOffice.org 3\\program\\" + command);
-                                    } catch (IOException ex6) {
-                                        new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
+                        new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
+                        return false;
                     }
                 }
                 return true;

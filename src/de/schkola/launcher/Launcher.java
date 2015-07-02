@@ -12,10 +12,10 @@ import javax.swing.JMenuBar;
 public class Launcher extends JFrame {
 
     private final JMenuBar menubar = new JMenuBar();
-    private static final String VERSION = "1.5.1";
-    private static final String DATE_LAST_MODIFIED = "Donnerstag, 30.04.2015";
-    public static final Color FOREGROUND = new Color(0, 96, 96);
-    private static final Color BACKGROUND = new Color(135, 235, 80);
+    private static final String VERSION = "1.6.0";
+    private static final String DATE_LAST_MODIFIED = "Donnerstag, 02.07.2015";
+    public static final Color FOREGROUND = new Color(29, 62, 143); //#00B1B5
+    public static final Color BACKGROUND = new Color(0, 177, 181); //#1D3E8F
     public static Font FONT_BIG = new Font("SanukPro", Font.PLAIN, 15);
     public static Font FONT_SMALL = new Font("SanukPro", Font.PLAIN, 14);
     private static Launcher instance = null;
@@ -146,12 +146,15 @@ public class Launcher extends JFrame {
         launcher.setResizable(false);
         launcher.setUndecorated(true);
         launcher.setAlwaysOnTop(true);
-        if (minimized) launcher.setExtendedState(JFrame.ICONIFIED);
+        if (minimized) {
+            launcher.setExtendedState(JFrame.ICONIFIED);
+        }
         launcher.setVisible(true);
     }
 
     /**
      * Main!
+     *
      * @param args Commandline arguments
      */
     public static void main(String[] args) {
@@ -166,6 +169,7 @@ public class Launcher extends JFrame {
 
     /**
      * Return the current Instance of the Launcher
+     *
      * @return
      */
     public static Launcher getInstance() {
@@ -177,6 +181,7 @@ public class Launcher extends JFrame {
 
     /**
      * Return the Launcher logo
+     *
      * @return
      */
     public static Image getLogo() {
@@ -185,6 +190,7 @@ public class Launcher extends JFrame {
 
     /**
      * Returns the current Launcher version
+     *
      * @return
      */
     public static String getVersion() {
@@ -193,6 +199,7 @@ public class Launcher extends JFrame {
 
     /**
      * Returns the Date when the Launcher was last modified
+     *
      * @return
      */
     public static String getDateLaftModified() {
