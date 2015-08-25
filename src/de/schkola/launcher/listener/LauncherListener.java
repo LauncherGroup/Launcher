@@ -5,7 +5,6 @@ import de.schkola.launcher.dialog.Help;
 import de.schkola.launcher.Launcher;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
 
 public class LauncherListener implements ActionListener {
 
@@ -24,7 +23,7 @@ public class LauncherListener implements ActionListener {
         } else if (e.getSource() == l.m5hilfe) {
             new Help();
         } else if (e.getSource() == l.m5mini) {
-            l.launcher.setExtendedState(JFrame.ICONIFIED);
+            Launcher.minimize();
         }
     }
 }

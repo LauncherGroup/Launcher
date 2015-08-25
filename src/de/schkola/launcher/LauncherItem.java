@@ -2,9 +2,9 @@ package de.schkola.launcher;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LauncherItem extends JMenuItem {
@@ -19,11 +19,11 @@ public class LauncherItem extends JMenuItem {
      * @param name Displayed name of the Menu
      * @param parent Parent element | wehre the menu should added
      * @param runmode See 'RunMode.java'
-     * @param command The first command that should executed
      * @param minimized Should the Launcher minimized after executing
      * @param instance The instance of Launcher -> normaly 'this'
+     * @param command The first command that should executed
      */
-    public LauncherItem(String name, JMenuItem parent, RunMode runmode, String command, boolean minimized, Launcher instance) {
+    public LauncherItem(String name, JMenuItem parent, RunMode runmode, boolean minimized, Launcher instance, String... command) {
         this.setText(name);
         this.setForeground(Launcher.FOREGROUND);
         this.setFont(Launcher.FONT_BIG);
@@ -41,7 +41,7 @@ public class LauncherItem extends JMenuItem {
                             run = Run.run(mode, commands.get(i), false);
                         }
                         if ((run || commands.size() == 1) && shouldMinimized) {
-                            Launcher.getInstance().setExtendedState(JFrame.ICONIFIED);
+                            Launcher.minimize();
                             return;
                         }
                     }
@@ -49,7 +49,7 @@ public class LauncherItem extends JMenuItem {
                 }
             });
         }
-        commands.add(command);
+        commands.addAll(Arrays.asList(command));
         mode = runmode;
         parentItem = parent;
         shouldMinimized = minimized;
