@@ -1,5 +1,6 @@
 package de.schkola.launcher;
 
+import de.schkola.launcher.dialog.ErrorHandler;
 import de.schkola.launcher.dialog.AnswerDialog;
 import java.io.IOException;
 
@@ -104,5 +105,49 @@ public class Run {
                 return true;
         }
         return false;
+    }
+
+    public enum RunMode {
+
+        /**
+         * Opens an webpage with 'Internet Explorer'
+         */
+        IEXPLORE,
+        /**
+         * Opens an webpage with 'Opera'
+         */
+        OPERA,
+        /**
+         * Runs the given command
+         */
+        PROGRAM,
+        /**
+         * Runs an KiXtart Script
+         */
+        KIX,
+        /**
+         * Runs an application from an server
+         */
+        SERVER,
+        /**
+         * Runs an shutdown command in Windows
+         */
+        SHUTDOWN,
+        /**
+         * RunMode for computer commands like 'explorer.exe ...'
+         */
+        COMPUTER,
+        /**
+         * Opens an 'Microsoft Office' application
+         */
+        MSOFFICE,
+        /**
+         * Open an 'OpenOffice' application
+         */
+        OPENOFFICE,
+        /**
+         * Uses an ActionListener
+         */
+        ACTION;
     }
 }

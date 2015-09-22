@@ -1,5 +1,8 @@
-package de.schkola.launcher;
+package de.schkola.launcher.swing;
 
+import de.schkola.launcher.Launcher;
+import de.schkola.launcher.Run;
+import de.schkola.launcher.Run.RunMode;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
@@ -16,48 +19,52 @@ public class LauncherItem extends JMenuItem {
 
     /**
      * Add an new LauncherItem
+     *
      * @param name Displayed name of the Menu
      * @param parent Parent element | wehre the menu should added
      * @param runmode See 'RunMode.java'
      * @param minimized Should the Launcher minimized after executing
-     * @param instance The instance of Launcher -> normaly 'this'
-     * @param command The first command that should executed
+     * @param command The commands that should executed
      */
-    public LauncherItem(String name, JMenuItem parent, RunMode runmode, boolean minimized, Launcher instance, String... command) {
-        this.setText(name);
-        this.setForeground(Launcher.FOREGROUND);
-        this.setFont(Launcher.FONT_BIG);
-        if (runmode.equals(RunMode.FRAME)) {
-            this.addActionListener(instance.AL);
-        } else {
-            this.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent w) {
-                    boolean run;
-                    for (int i = 0; i < commands.size(); i++) {
-                        if (i == commands.size() - 1) {
-                            run = Run.run(mode, commands.get(i), true);
-                        } else {
-                            run = Run.run(mode, commands.get(i), false);
-                        }
-                        if ((run || commands.size() == 1) && shouldMinimized) {
-                            Launcher.minimize();
-                            return;
-                        }
-                    }
-
-                }
-            });
-        }
+    public LauncherItem(String name, JMenuItem parent, RunMode runmode, boolean minimized, String... command) {
+        setText(name);
+        setForeground(Launcher.FOREGROUND);
+        setFont(Launcher.FONT_BIG);
         commands.addAll(Arrays.asList(command));
         mode = runmode;
         parentItem = parent;
         shouldMinimized = minimized;
         parent.add(this);
+        addActionListener((ActionEvent w) -> {
+            boolean run;
+            for (int i = 0; i < commands.size(); i++) {
+                if (i == commands.size() - 1) {
+                    run = Run.run(mode, commands.get(i), true);
+                } else {
+                    run = Run.run(mode, commands.get(i), false);
+                }
+                if ((run || commands.size() == 1) && shouldMinimized) {
+                    Launcher.minimize();
+                    return;
+                }
+            }
+        });
+    }
+
+    public LauncherItem(String name, JMenuItem parent, boolean minimized, ActionListener al) {
+        setText(name);
+        setForeground(Launcher.FOREGROUND);
+        setFont(Launcher.FONT_BIG);
+        mode = RunMode.ACTION;
+        parentItem = parent;
+        shouldMinimized = minimized;
+        parent.add(this);
+        addActionListener(al);
     }
 
     /**
      * Add an new command to the LauncherItem
+     *
      * @param command
      */
     public void addCommand(String command) {
@@ -66,6 +73,7 @@ public class LauncherItem extends JMenuItem {
 
     /**
      * Return the RunMode of the LauncherItem
+     *
      * @return See 'RunMode.java'
      */
     public RunMode getRunMode() {
@@ -74,6 +82,7 @@ public class LauncherItem extends JMenuItem {
 
     /**
      * Return the parent item of the LauncherItem
+     *
      * @return
      */
     public JMenuItem getParentItem() {
@@ -82,6 +91,7 @@ public class LauncherItem extends JMenuItem {
 
     /**
      * Return an 'List' of all commands of the LauncherItem
+     *
      * @return
      */
     public List<String> getCommands() {
@@ -90,6 +100,7 @@ public class LauncherItem extends JMenuItem {
 
     /**
      * Returns the command with the given index number
+     *
      * @param index Index number of the command
      * @return Command
      */
@@ -99,6 +110,7 @@ public class LauncherItem extends JMenuItem {
 
     /**
      * Returns whether the Launcher should minimized after executing the command
+     *
      * @return TRUE = Should minimized | FALSE = Shouldn't minimized
      */
     public boolean getMinimized() {
