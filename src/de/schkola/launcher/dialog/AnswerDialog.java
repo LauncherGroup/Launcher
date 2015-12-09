@@ -7,9 +7,9 @@ import de.schkola.launcher.swing.LauncherPanel;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 
-public class AnswerDialog extends JFrame {
+public class AnswerDialog extends JDialog {
 
     private final LauncherPanel panel = new LauncherPanel();
     private final LauncherButton no = new LauncherButton(" Nein ");
@@ -18,6 +18,7 @@ public class AnswerDialog extends JFrame {
     private String performThis;
 
     public AnswerDialog(String perform) {
+        super(Launcher.getInstance());
         performThis = perform;
         switch (perform) {
             case "shutdown":

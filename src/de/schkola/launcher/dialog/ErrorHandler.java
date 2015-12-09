@@ -3,9 +3,9 @@ package de.schkola.launcher.dialog;
 import de.schkola.launcher.Launcher;
 import de.schkola.launcher.swing.LauncherLabel;
 import de.schkola.launcher.swing.LauncherPanel;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 
-public class ErrorHandler extends JFrame {
+public class ErrorHandler extends JDialog {
 
     private final LauncherPanel panel = new LauncherPanel();
     private final LauncherLabel label = new LauncherLabel();
@@ -16,6 +16,7 @@ public class ErrorHandler extends JFrame {
      * @param type See ErrorType
      */
     public ErrorHandler(ErrorType type) {
+        super(Launcher.getInstance());
         switch (type) {
             case NO_CONNECTION:
                 setTitle(" Keine Verbindung zum Server ");

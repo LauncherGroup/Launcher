@@ -17,8 +17,8 @@ import javax.swing.JMenuBar;
 public class Launcher extends JFrame {
 
     private final JMenuBar menubar = new JMenuBar();
-    private static final String VERSION = "1.6.2";
-    private static final String DATE_LAST_MODIFIED = "Donnerstag, 10.09.2015";
+    private static final String VERSION = "1.6.3";
+    private static final String DATE_LAST_MODIFIED = "Mittwoch, 09.12.2015";
     public static final Color FOREGROUND = new Color(29, 62, 143); //#00B1B5
     public static final Color BACKGROUND = new Color(0, 177, 181); //#1D3E8F
     public static Font FONT_BIG = new Font("SanukPro", Font.PLAIN, 15);
