@@ -13,9 +13,9 @@ public class LauncherMenu extends JMenu {
      * @param parent Parent element | wehre the menu should added
      */
     public LauncherMenu(String name, JMenuItem parent) {
-        setText(name);
-        setForeground(Launcher.FOREGROUND);
-        setFont(Launcher.FONT_BIG);
+        super.setText(name);
+        super.setForeground(Launcher.FOREGROUND);
+        super.setFont(Launcher.FONT_BIG);
         parent.add(this);
     }
 
@@ -25,9 +25,9 @@ public class LauncherMenu extends JMenu {
      * @param parent Parent element | wehre the menu should added
      */
     public LauncherMenu(String name, JMenuBar parent) {
-        setText(name);
-        setForeground(Launcher.FOREGROUND);
-        setFont(Launcher.FONT_BIG);
+        super.setText(name);
+        super.setForeground(Launcher.FOREGROUND);
+        super.setFont(Launcher.FONT_BIG);
         parent.add(this);
     }
 }

@@ -22,29 +22,29 @@ public class AnswerDialog extends JDialog {
         performThis = perform;
         switch (perform) {
             case "shutdown":
-                setTitle(" Herrunterfahren? ");
-                setSize(390, 100);
+                super.setTitle(" Herrunterfahren? ");
+                super.setSize(390, 100);
                 label.setText("M\u00F6chtst du den Computer wirklich herrunterfahren?");
                 break;
             case "logoff":
-                setTitle(" Ausloggen? ");
-                setSize(280, 100);
+                super.setTitle(" Ausloggen? ");
+                super.setSize(280, 100);
                 label.setText("M\u00F6chtst du dich wirklich abmelden?");
                 break;
             case "restart":
-                setTitle(" Neustarten? ");
-                setSize(380, 100);
+                super.setTitle(" Neustarten? ");
+                super.setSize(380, 100);
                 label.setText("M\u00F6chtest du den Computer wirklich neustarten?");
                 break;
         }
         panel.add(label);
         panel.add(yes, BorderLayout.SOUTH);
         panel.add(no, BorderLayout.SOUTH);
-        setLocation(350, 250);
-        getContentPane().add(panel);
-        setIconImage(Launcher.getLogo());
-        setVisible(true);
-        setResizable(false);
+        super.setLocation(350, 250);
+        super.getContentPane().add(panel);
+        super.setIconImage(Launcher.getLogo());
+        super.setVisible(true);
+        super.setResizable(false);
         yes.addActionListener((ActionEvent w) -> {
             Runtime runtime = Runtime.getRuntime();
             try {

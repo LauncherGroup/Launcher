@@ -27,15 +27,15 @@ public class LauncherItem extends JMenuItem {
      * @param command The commands that should executed
      */
     public LauncherItem(String name, JMenuItem parent, RunMode runmode, boolean minimized, String... command) {
-        setText(name);
-        setForeground(Launcher.FOREGROUND);
-        setFont(Launcher.FONT_BIG);
+        super.setText(name);
+        super.setForeground(Launcher.FOREGROUND);
+        super.setFont(Launcher.FONT_BIG);
         commands.addAll(Arrays.asList(command));
         mode = runmode;
         parentItem = parent;
         shouldMinimized = minimized;
         parent.add(this);
-        addActionListener((ActionEvent w) -> {
+        super.addActionListener((ActionEvent w) -> {
             boolean run;
             for (int i = 0; i < commands.size(); i++) {
                 if (i == commands.size() - 1) {
@@ -52,14 +52,14 @@ public class LauncherItem extends JMenuItem {
     }
 
     public LauncherItem(String name, JMenuItem parent, boolean minimized, ActionListener al) {
-        setText(name);
-        setForeground(Launcher.FOREGROUND);
-        setFont(Launcher.FONT_BIG);
+        super.setText(name);
+        super.setForeground(Launcher.FOREGROUND);
+        super.setFont(Launcher.FONT_BIG);
         mode = RunMode.ACTION;
         parentItem = parent;
         shouldMinimized = minimized;
         parent.add(this);
-        addActionListener(al);
+        super.addActionListener(al);
     }
 
     /**

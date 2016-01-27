@@ -10,9 +10,9 @@ public class LauncherButton extends JButton {
     }
     
     public LauncherButton(String title) {
-        setText(title);
-        setForeground(Launcher.FOREGROUND);
-        setBackground(Launcher.BACKGROUND);
-        setFont(Launcher.FONT_BIG);
+        super.setText(title);
+        super.setForeground(Launcher.FOREGROUND);
+        super.setBackground(Launcher.BACKGROUND);
+        super.setFont(Launcher.FONT_BIG);
     }
 }

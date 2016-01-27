@@ -13,13 +13,13 @@ public class Help extends JDialog {
 
     public Help() {
         super(Launcher.getInstance());
-        setTitle("Hilfe");
+        super.setTitle("Hilfe");
         panel.add(hilfe_text);
-        getContentPane().add(panel);
-        setSize(650, 290);
-        setLocation(300, 150);
-        setIconImage(Launcher.getLogo());
-        setResizable(false);
-        setVisible(true);
+        super.getContentPane().add(panel);
+        super.setSize(650, 290);
+        super.setLocation(300, 150);
+        super.setIconImage(Launcher.getLogo());
+        super.setResizable(false);
+        super.setVisible(true);
     }
 }

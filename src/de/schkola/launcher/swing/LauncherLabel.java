@@ -10,8 +10,8 @@ public class LauncherLabel extends JLabel {
     }
     
     public LauncherLabel(String text) {
-        setText(text);
-        setForeground(Launcher.FOREGROUND);
-        setFont(Launcher.FONT_BIG);
+        super.setText(text);
+        super.setForeground(Launcher.FOREGROUND);
+        super.setFont(Launcher.FONT_BIG);
     }
 }

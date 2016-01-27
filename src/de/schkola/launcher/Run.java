@@ -2,7 +2,10 @@ package de.schkola.launcher;
 
 import de.schkola.launcher.dialog.ErrorHandler;
 import de.schkola.launcher.dialog.AnswerDialog;
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class Run {
 
@@ -14,7 +17,7 @@ public class Run {
      * @param last Is this command the last?
      * @return TRUE = Executed | FALSE = NOT EXECUTED (ERROR)
      */
-    public static Boolean run(RunMode mode, String command, Boolean last) {
+    public static boolean run(RunMode mode, String command, boolean last) {
         Runtime runtime = Runtime.getRuntime();
         switch (mode) {
             case PROGRAM:
@@ -32,6 +35,16 @@ public class Run {
                     runtime.exec(System.getenv("PROGRAMFILES") + "\\Internet Explorer\\iexplore.exe " + command);
                     return true;
                 } catch (IOException ex) {
+                    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+                    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                        try {
+                            desktop.browse(new URI(command));
+                            return true;
+                        } catch (URISyntaxException | IOException e) {
+                            new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
+                            return false;
+                        }
+                    }
                     new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
                     return false;
                 }
@@ -42,6 +55,19 @@ public class Run {
                     try {
                         runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe -newtab " + command);
                     } catch (IOException ex2) {
+                        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+                        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                            if (System.getProperty("os.name").equals("Linux")) {
+                                command = command.replace("file://", "smb://");
+                            }
+                            try {
+                                desktop.browse(new URI(command));
+                                return true;
+                            } catch (URISyntaxException | IOException e) {
+                                new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
+                                return false;
+                            }
+                        }
                         new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
                         return false;
                     }
@@ -93,10 +119,10 @@ public class Run {
                 return true;
             case OPENOFFICE:
                 try {
-                    Runtime.getRuntime().exec(System.getenv("PROGRAMFILES") + "\\OpenOffice 4\\program\\" + command);
+                    runtime.exec(System.getenv("PROGRAMFILES") + "\\OpenOffice 4\\program\\" + command);
                 } catch (IOException ex1) {
                     try {
-                        Runtime.getRuntime().exec(System.getenv("PROGRAMFILES") + " (x86)\\OpenOffice 4\\program\\" + command);
+                        runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\OpenOffice 4\\program\\" + command);
                     } catch (IOException ex2) {
                         new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
                         return false;

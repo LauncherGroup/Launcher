@@ -6,6 +6,6 @@ import javax.swing.JPanel;
 public class LauncherPanel extends JPanel {
 
     public LauncherPanel() {
-        setBackground(Launcher.BACKGROUND);
+        super.setBackground(Launcher.BACKGROUND);
     }
 }

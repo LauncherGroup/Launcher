@@ -17,28 +17,28 @@ import javax.swing.JMenuBar;
 public class Launcher extends JFrame {
 
     private final JMenuBar menubar = new JMenuBar();
-    private static final String VERSION = "1.6.3";
-    private static final String DATE_LAST_MODIFIED = "Mittwoch, 09.12.2015";
+    private static final String VERSION = "1.6.4";
+    private static final String DATE_LAST_MODIFIED = "Mittwoch, 27.01.2016";
     public static final Color FOREGROUND = new Color(29, 62, 143); //#00B1B5
     public static final Color BACKGROUND = new Color(0, 177, 181); //#1D3E8F
     public static Font FONT_BIG = new Font("SanukPro", Font.PLAIN, 15);
     public static Font FONT_SMALL = new Font("SanukPro", Font.PLAIN, 14);
     private static Launcher instance = null;
     //Menupunkte - Toolbar
-    private final LauncherMenu fach = new LauncherMenu(" Lernspiele ", menubar);
+    private final LauncherMenu lernspiele = new LauncherMenu(" Lernspiele ", menubar);
     private final LauncherMenu nachschlagewerk = new LauncherMenu(" Nachschlagewerke ", menubar);
-    private final LauncherMenu lern = new LauncherMenu(" Lernprogramme ", menubar);
+    private final LauncherMenu lernprog = new LauncherMenu(" Lernprogramme ", menubar);
     private final LauncherMenu prog = new LauncherMenu(" Werkzeuge ", menubar);
     private final LauncherMenu web = new LauncherMenu(" Webseiten ", menubar);
     private final LauncherMenu computer = new LauncherMenu(" Computer ", menubar);
-    private final LauncherMenu mueber = new LauncherMenu(" Programm ", menubar);
+    private final LauncherMenu about = new LauncherMenu(" Programm ", menubar);
     //Menuitems
     //1
-    private final LauncherMenu m1geo = new LauncherMenu(" Geografie ", fach);
+    private final LauncherMenu m1geo = new LauncherMenu(" Geografie ", lernspiele);
     private final LauncherItem m1geo_geograficus = new LauncherItem(" Geograficus ", m1geo, RunMode.PROGRAM, true, "C:\\Program Files (x86)\\BrainGame\\Geograficus\\Geograficus.exe");
-    private final LauncherMenu m1info = new LauncherMenu(" Infomartik ", fach);
+    private final LauncherMenu m1info = new LauncherMenu(" Infomartik ", lernspiele);
     private final LauncherItem m1info_informaticus = new LauncherItem(" Informaticus ", m1info, RunMode.PROGRAM, true, "C:\\Program Files (x86)\\BrainGame\\Informaticus\\Informaticus.exe");
-    private final LauncherMenu m1ma = new LauncherMenu(" Mathematik ", fach);
+    private final LauncherMenu m1ma = new LauncherMenu(" Mathematik ", lernspiele);
     private final LauncherItem m1ma_mathica = new LauncherItem(" Mathica ", m1ma, RunMode.PROGRAM, true, "C:\\Program Files (x86)\\BrainGame\\Mathica\\Mathica.exe");
     private final LauncherMenu m1ma_mathematikus = new LauncherMenu(" Mathematikus ", m1ma);
     private final LauncherItem m1ma_ma_1 = new LauncherItem(" Mathematikus 1 ", m1ma_mathematikus, RunMode.SERVER, true, "\\\\svr03-eb\\Matikus1$\\Matikus1Net.exe");
@@ -65,11 +65,11 @@ public class Launcher extends JFrame {
     private final LauncherItem m2formelsammelung = new LauncherItem(" Formelsammelung ", nachschlagewerk, RunMode.OPERA, true, "\\\\SVR03-EB\\esa\\infos\\Fachbereiche\\Naturwissenschaften\\Formelsamllung_bis_10\\fs_htm\\start.htm");
     private final LauncherItem m2LoewenzahnLexi = new LauncherItem(" L\u00F6wenzahn Lexikon ", nachschlagewerk, RunMode.KIX, true, "D:\\Launcher\\loewenzahn.kix");
     //2-2
-    private final LauncherMenu m2info = new LauncherMenu(" Informatik ", lern);
+    private final LauncherMenu m2info = new LauncherMenu(" Informatik ", lernprog);
     private final LauncherItem m2info_robot = new LauncherItem(" Robot Karol ", m2info, RunMode.PROGRAM, true, "C:\\Program Files (x86)\\RobotKarol\\karol.exe");
     private final LauncherItem m2info_mslogo = new LauncherItem(" Microsoft Logo ", m2info, RunMode.PROGRAM, true, "C:\\Program Files (x86)\\Softronics\\Microsoft Windows Logo\\Logo32.exe");
     private final LauncherItem m2info_tipp10 = new LauncherItem(" TIPP 10 ", m2info, RunMode.PROGRAM, true, "C:\\Program Files (x86)\\Tipp10\\tipp10.exe");
-    private final LauncherMenu m2ma = new LauncherMenu(" Mathematik ", lern);
+    private final LauncherMenu m2ma = new LauncherMenu(" Mathematik ", lernprog);
     private final LauncherMenu m2ma_mathebits = new LauncherMenu(" Mathe Bits ", m2ma);
     private final LauncherItem m2ma_3_satz = new LauncherItem(" 3 Satz, Prozente und Zinsen ", m2ma_mathebits, RunMode.PROGRAM, true, "D:\\Launcher\\Prozente_7.bat");
     private final LauncherItem m2ma_terme = new LauncherItem(" Terme und Gleichungen ", m2ma_mathebits, RunMode.PROGRAM, true, "D:\\Launcher\\Terme_7.bat");
@@ -109,10 +109,10 @@ public class Launcher extends JFrame {
     private final LauncherItem m6home = new LauncherItem(" Homeverzeichniss ", computer, RunMode.COMPUTER, true, "explorer.exe P:");
     private final LauncherItem m6computer = new LauncherItem(" Arbeitsplatz ", computer, RunMode.COMPUTER, true, "explorer.exe /e,");
     //6
-    private final LauncherItem m5ueber = new LauncherItem(" \u00DCber ", mueber, false, (ActionEvent ae) -> new Info());
-    private final LauncherItem m5hilfe = new LauncherItem(" Hilfe ", mueber, false, (ActionEvent ae) -> new Help());
-    private final LauncherItem m5mini = new LauncherItem(" Minimieren ", mueber, true, (ActionEvent ae) -> Launcher.minimize());
-    private final LauncherItem close = new LauncherItem(" Beenden ", mueber, false, (ActionEvent ae) -> System.exit(0));
+    private final LauncherItem m5ueber = new LauncherItem(" \u00DCber ", about, false, (ActionEvent ae) -> new Info());
+    private final LauncherItem m5hilfe = new LauncherItem(" Hilfe ", about, false, (ActionEvent ae) -> new Help());
+    private final LauncherItem m5mini = new LauncherItem(" Minimieren ", about, true, (ActionEvent ae) -> Launcher.minimize());
+    private final LauncherItem close = new LauncherItem(" Beenden ", about, false, (ActionEvent ae) -> System.exit(0));
     private static Image logo = null;
 
     public Launcher(boolean minimized) {
@@ -125,9 +125,9 @@ public class Launcher extends JFrame {
         m3webweaver.addCommand("C:\\Programme\\DigiOnline GmbH\\WebWeaver Desktop\\WebWeaver.exe");
         m3webweaver.addCommand("D:\\Programme\\DigiOnline GmbH\\WebWeaver Desktop\\WebWeaver.exe");
         m3image_gimp.addCommand("C:\\Program Files\\GIMP 2\\bin\\gimp-2.6.exe");
-        setIconImage(logo);
-        addWindowListener(new WindowListener());
-        setJMenuBar(menubar);
+        super.setIconImage(logo);
+        super.addWindowListener(new WindowListener());
+        super.setJMenuBar(menubar);
         startupLauncher(minimized);
     }
 

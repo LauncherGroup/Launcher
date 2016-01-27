@@ -13,13 +13,13 @@ public class Info extends JDialog {
 
     public Info() {
         super(Launcher.getInstance());
-        setTitle("\u00DCber...");
+        super.setTitle("\u00DCber...");
         panel.add(info_text);
-        getContentPane().add(panel);
-        setSize(450, 100);
-        setLocation(300, 150);
-        setIconImage(Launcher.getLogo());
-        setResizable(false);
-        setVisible(true);
+        super.getContentPane().add(panel);
+        super.setSize(450, 100);
+        super.setLocation(300, 150);
+        super.setIconImage(Launcher.getLogo());
+        super.setResizable(false);
+        super.setVisible(true);
     }
 }

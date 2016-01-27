@@ -19,22 +19,22 @@ public class ErrorHandler extends JDialog {
         super(Launcher.getInstance());
         switch (type) {
             case NO_CONNECTION:
-                setTitle(" Keine Verbindung zum Server ");
-                setSize(350, 100);
+                super.setTitle(" Keine Verbindung zum Server ");
+                super.setSize(350, 100);
                 label.setText("<html><body><center><br>Das Ger\u00E4t hat keine Verbindung zum Server!</center></body></html>");
                 break;
             case NOT_AVAILABLE:
-                setTitle(" Programm nicht verf\u00FCgbar ");
-                setSize(450, 100);
+                super.setTitle(" Programm nicht verf\u00FCgbar ");
+                super.setSize(450, 100);
                 label.setText("<html><body><center><br>Dieses Programm ist auf diesem Ger\u00E4t leider nicht verf\u00FCgbar!</center></body></html>");
                 break;
         }
         panel.add(label);
-        setLocation(350, 250);
-        getContentPane().add(panel);
-        setIconImage(Launcher.getLogo());
-        setResizable(false);
-        setVisible(true);
+        super.setLocation(350, 250);
+        super.getContentPane().add(panel);
+        super.setIconImage(Launcher.getLogo());
+        super.setResizable(false);
+        super.setVisible(true);
     }
 
     public enum ErrorType {
