@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LauncherItem extends JMenuItem {
 
-    private final List<String> commands = new ArrayList();
+    private final List<String> commands = new ArrayList<>();
     private final RunMode mode;
     private final JMenuItem parentItem;
     private final boolean shouldMinimized;
@@ -43,7 +43,7 @@ public class LauncherItem extends JMenuItem {
                 } else {
                     run = Run.run(mode, commands.get(i), false);
                 }
-                if ((run || commands.size() == 1) && shouldMinimized) {
+                if (run && shouldMinimized) {
                     Launcher.minimize();
                     return;
                 }

@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import javax.swing.JDialog;
 
-public class AnswerDialog extends JDialog {
+public class ShutdownDialog extends JDialog {
 
     private final LauncherPanel panel = new LauncherPanel();
     private final LauncherButton no = new LauncherButton(" Nein ");
@@ -17,7 +17,7 @@ public class AnswerDialog extends JDialog {
     private final LauncherLabel label = new LauncherLabel();
     private String performThis;
 
-    public AnswerDialog(String perform) {
+    public ShutdownDialog(String perform) {
         super(Launcher.getInstance());
         performThis = perform;
         switch (perform) {

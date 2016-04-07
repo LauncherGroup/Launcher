@@ -4,10 +4,6 @@ import de.schkola.launcher.Launcher;
 import javax.swing.JButton;
 
 public class LauncherButton extends JButton {
-
-    public LauncherButton() {
-        this("");
-    }
     
     public LauncherButton(String title) {
         super.setText(title);

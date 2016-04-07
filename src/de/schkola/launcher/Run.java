@@ -1,7 +1,7 @@
 package de.schkola.launcher;
 
 import de.schkola.launcher.dialog.ErrorHandler;
-import de.schkola.launcher.dialog.AnswerDialog;
+import de.schkola.launcher.dialog.ShutdownDialog;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -20,7 +20,7 @@ public class Run {
     public static boolean run(RunMode mode, String command, boolean last) {
         Runtime runtime = Runtime.getRuntime();
         switch (mode) {
-            case PROGRAM:
+            case COMMAND:
                 try {
                     runtime.exec(command);
                     return true;
@@ -30,49 +30,37 @@ public class Run {
                     }
                     return false;
                 }
-            case IEXPLORE:
+            case WEB:
                 try {
-                    runtime.exec(System.getenv("PROGRAMFILES") + "\\Internet Explorer\\iexplore.exe " + command);
+                    runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe -newtab " + command);
                     return true;
                 } catch (IOException ex) {
-                    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-                    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                    try {
+                        runtime.exec(System.getenv("PROGRAMFILES") + "\\Opera\\launcher.exe -newtab " + command);
+                        return true;
+                    } catch (IOException ex1) {
                         try {
-                            desktop.browse(new URI(command));
+                            runtime.exec(System.getenv("PROGRAMFILES") + "\\Internet Explorer\\iexplore.exe " + command);
                             return true;
-                        } catch (URISyntaxException | IOException e) {
+                        } catch (IOException ex2) {
+                            Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+                            if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                                if (System.getProperty("os.name").equals("Linux")) {
+                                    command = command.replace("file://", "smb://");
+                                }
+                                try {
+                                    desktop.browse(new URI(command));
+                                    return true;
+                                } catch (URISyntaxException | IOException e) {
+                                    new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
+                                    return false;
+                                }
+                            }
                             new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
                             return false;
                         }
                     }
-                    new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
-                    return false;
                 }
-            case OPERA:
-                try {
-                    runtime.exec(System.getenv("PROGRAMFILES") + "\\Opera\\launcher.exe -newtab " + command);
-                } catch (IOException ex1) {
-                    try {
-                        runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe -newtab " + command);
-                    } catch (IOException ex2) {
-                        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-                        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-                            if (System.getProperty("os.name").equals("Linux")) {
-                                command = command.replace("file://", "smb://");
-                            }
-                            try {
-                                desktop.browse(new URI(command));
-                                return true;
-                            } catch (URISyntaxException | IOException e) {
-                                new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
-                                return false;
-                            }
-                        }
-                        new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
-                        return false;
-                    }
-                }
-                return true;
             case KIX:
                 try {
                     runtime.exec("KIX32.EXE " + command);
@@ -92,15 +80,8 @@ public class Run {
                     return false;
                 }
             case SHUTDOWN:
-                new AnswerDialog(command);
+                new ShutdownDialog(command);
                 break;
-            case COMPUTER:
-                try {
-                    runtime.exec(command);
-                    return true;
-                } catch (IOException ex) {
-                    return false;
-                }
             case MSOFFICE:
                 try {
                     runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Microsoft Office\\Office\\" + command);
@@ -119,13 +100,17 @@ public class Run {
                 return true;
             case OPENOFFICE:
                 try {
-                    runtime.exec(System.getenv("PROGRAMFILES") + "\\OpenOffice 4\\program\\" + command);
+                    runtime.exec(System.getenv("PROGRAMFILES") + "\\OpenOffice 4\\program\\s" + command + ".exe");
                 } catch (IOException ex1) {
                     try {
-                        runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\OpenOffice 4\\program\\" + command);
+                        runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\OpenOffice 4\\program\\s" + command + ".exe");
                     } catch (IOException ex2) {
-                        new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
-                        return false;
+                        try {
+                            runtime.exec("libreoffice --" + command);
+                        } catch (IOException ex3) {
+                            new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
+                            return false;
+                        }
                     }
                 }
                 return true;
@@ -136,17 +121,13 @@ public class Run {
     public enum RunMode {
 
         /**
-         * Opens an webpage with 'Internet Explorer'
+         * Opens an webpage
          */
-        IEXPLORE,
-        /**
-         * Opens an webpage with 'Opera'
-         */
-        OPERA,
+        WEB,
         /**
          * Runs the given command
          */
-        PROGRAM,
+        COMMAND,
         /**
          * Runs an KiXtart Script
          */
@@ -160,10 +141,6 @@ public class Run {
          */
         SHUTDOWN,
         /**
-         * RunMode for computer commands like 'explorer.exe ...'
-         */
-        COMPUTER,
-        /**
          * Opens an 'Microsoft Office' application
          */
         MSOFFICE,
@@ -175,5 +152,29 @@ public class Run {
          * Uses an ActionListener
          */
         ACTION;
+    }
+
+    public enum OfficeProg {
+        TEXT("writer", "WINWORD.EXE"),
+        CALC("calc", "EXCEL.EXE"),
+        PRESENTATION("impress", "POWERPNT.EXE"),
+        DATABASE("base", "MSACCESS.EXE"),
+        MATH("math", null),
+        DRAW("draw", null);
+        String ooname;
+        String msname;
+
+        OfficeProg(String ooname, String msname) {
+            this.ooname = ooname;
+            this.msname = msname;
+        }
+
+        public String getOOname() {
+            return ooname;
+        }
+
+        public String getMSname() {
+            return msname;
+        }
     }
 }
