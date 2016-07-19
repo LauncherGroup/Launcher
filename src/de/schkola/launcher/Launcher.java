@@ -17,10 +17,10 @@ import javax.swing.JMenuBar;
 public class Launcher extends JFrame {
 
     private final JMenuBar menubar = new JMenuBar();
-    private static final String VERSION = "1.7.0";
-    private static final String DATE_LAST_MODIFIED = "Donnerstag, 07.04.2016";
-    public static final Color FOREGROUND = new Color(29, 62, 143); //#00B1B5
-    public static final Color BACKGROUND = new Color(0, 177, 181); //#1D3E8F
+    private static final String VERSION = "1.8.0";
+    private static final String DATE_LAST_MODIFIED = "Dienstag, 19.07.2016";
+    public static final Color FOREGROUND = new Color(29, 62, 143); //#1D3E8F
+    public static final Color BACKGROUND = new Color(0, 177, 181); //#00B1B5
     public static Font FONT_BIG = new Font("SanukPro", Font.PLAIN, 15);
     public static Font FONT_SMALL = new Font("SanukPro", Font.PLAIN, 14);
     private static Launcher instance = null;
@@ -92,7 +92,10 @@ public class Launcher extends JFrame {
         new LauncherItem(" Dateimanager ", prog, RunMode.COMMAND, true, "C:\\Program Files (x86)\\totalcmd\\TOTALCMD.exe", "C:\\totalcmd\\TOTALCMD.exe");
         new LauncherItem(" Webbrowser (Internet) ", prog, RunMode.WEB, true, "");
         new LauncherItem(" WebWeaver Desktop ", prog, RunMode.COMMAND, true, "C:\\Program Files (x86)\\DigiOnline GmbH\\WebWeaver Desktop\\WebWeaver.exe", "mono /opt/WebWeaverDesktop/WebWeaver.exe");
-        new LauncherItem(" ActivInspire ", prog, RunMode.COMMAND, true, "C:\\Program Files (x86)\\Activ Software\\Inspire\\Inspire.exe", "inspire");
+        new LauncherItem(" ActivInspire ", prog, RunMode.COMMAND, true, "C:\\Program Files (x86)\\Activ Software\\Inspire\\Inspire.exe", "inspire", "\\\\SVR03-EB\\esa\\infos\\ActivBoard\\Netzinstall\\program%20files\\Activ%20Software\\Inspire\\Inspire.exe");
+        new LauncherItem(" Blender ", prog, RunMode.COMMAND, true, "C:\\Program Files (x86)\\Blender Foundation\\Blender\\blender.exe");
+        new LauncherItem(" Python IDLE ", prog, RunMode.COMMAND, true, "C:\\Program Files (x86)\\Python 3.5\\pythonw.exe \"C:\\Program Files (x86)\\Python 3.5\\Lib\\idlelib\\idle.pyw\"");
+        new LauncherItem(" Geogebra ", prog, RunMode.SERVER, true, "\\\\SVR03-EB\\esa\\infos\\Fachbereiche\\Mathematik\\GeoGebra%205.0.137.0\\GeoGebra.exe");
         new LauncherItem(" Writer (Textverarbeitung) ", m3office, RunMode.OPENOFFICE, true, OfficeProg.TEXT.getOOname());
         new LauncherItem(" Calc (Tabellenkalkulation) ", m3office, RunMode.OPENOFFICE, true, OfficeProg.CALC.getOOname());
         new LauncherItem(" Impress (Pr\u00E4sentation) ", m3office, RunMode.OPENOFFICE, true, OfficeProg.PRESENTATION.getOOname());

@@ -32,11 +32,11 @@ public class Run {
                 }
             case WEB:
                 try {
-                    runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe -newtab " + command);
+                    runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe --user-data-dir=P:\\Opera -newtab " + command);
                     return true;
                 } catch (IOException ex) {
                     try {
-                        runtime.exec(System.getenv("PROGRAMFILES") + "\\Opera\\launcher.exe -newtab " + command);
+                        runtime.exec(System.getenv("PROGRAMFILES") + "\\Opera\\launcher.exe --user-data-dir=P:\\Opera -newtab " + command);
                         return true;
                     } catch (IOException ex1) {
                         try {
