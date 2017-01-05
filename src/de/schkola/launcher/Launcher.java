@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package de.schkola.launcher;
 
 import de.schkola.launcher.Run.OfficeProg;
@@ -34,15 +33,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
 public class Launcher extends JFrame {
 
     private final JMenuBar menubar = new JMenuBar();
-    private static final String VERSION = "1.8.0";
-    private static final String DATE_LAST_MODIFIED = "Dienstag, 19.07.2016";
+    private static final String VERSION = "1.8.1";
+    private static final String DATE_LAST_MODIFIED = "Donnerstag, 05.01.2017";
     public static final Color FOREGROUND = new Color(29, 62, 143); //#1D3E8F
     public static final Color BACKGROUND = new Color(0, 177, 181); //#00B1B5
     public static Font FONT_BIG = new Font("SanukPro", Font.PLAIN, 15);
@@ -146,10 +144,10 @@ public class Launcher extends JFrame {
         new LauncherItem(" Homeverzeichniss ", computer, RunMode.COMMAND, true, "explorer.exe P:");
         new LauncherItem(" Arbeitsplatz ", computer, RunMode.COMMAND, true, "explorer.exe /e", "nemo");
         //6
-        new LauncherItem(" \u00DCber ", about, false, (ActionEvent ae) -> new Info());
-        new LauncherItem(" Hilfe ", about, false, (ActionEvent ae) -> new Help());
-        new LauncherItem(" Minimieren ", about, true, (ActionEvent ae) -> Launcher.minimize());
-        new LauncherItem(" Beenden ", about, false, (ActionEvent ae) -> System.exit(0));
+        new LauncherItem(" \u00DCber ", about, false, (ae) -> new Info());
+        new LauncherItem(" Hilfe ", about, false, (ae) -> new Help());
+        new LauncherItem(" Minimieren ", about, true, (ae) -> minimize());
+        new LauncherItem(" Beenden ", about, false, (ae) -> System.exit(0));
         startupLauncher(minimized);
     }
 
@@ -229,7 +227,7 @@ public class Launcher extends JFrame {
     /**
      * Minimize the Launcher to the Taskbar
      */
-    public static void minimize() {
-        instance.setExtendedState(ICONIFIED);
+    public void minimize() {
+        setExtendedState(ICONIFIED);
     }
 }

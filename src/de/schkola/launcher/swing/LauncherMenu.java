@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package de.schkola.launcher.swing;
 
 import de.schkola.launcher.Launcher;
@@ -32,6 +31,7 @@ public class LauncherMenu extends JMenu {
 
     /**
      * Add an new LauncherMenu
+     *
      * @param name Displayed name of the Menu
      * @param parent Parent element | wehre the menu should added
      */

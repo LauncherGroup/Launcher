@@ -21,13 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package de.schkola.launcher.swing;
 
 import de.schkola.launcher.Launcher;
 import de.schkola.launcher.Run;
 import de.schkola.launcher.Run.RunMode;
-import java.awt.event.ActionEvent;
+import de.schkola.launcher.dialog.ErrorHandler;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,16 +58,15 @@ public class LauncherItem extends JMenuItem {
         parentItem = parent;
         shouldMinimized = minimized;
         parent.add(this);
-        super.addActionListener((ActionEvent w) -> {
-            boolean run;
+        super.addActionListener((w) -> {
             for (int i = 0; i < commands.size(); i++) {
-                if (i == commands.size() - 1) {
-                    run = Run.run(mode, commands.get(i), true);
-                } else {
-                    run = Run.run(mode, commands.get(i), false);
-                }
-                if (run && shouldMinimized) {
-                    Launcher.minimize();
+                if (Run.run(mode, commands.get(i))) {
+                    if (shouldMinimized) {
+                        Launcher.getInstance().minimize();
+                    }
+                    return;
+                } else if (i == commands.size() - 1) {
+                    new ErrorHandler(runmode.getErrorType());
                     return;
                 }
             }

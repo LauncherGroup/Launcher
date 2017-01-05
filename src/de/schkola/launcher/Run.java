@@ -21,12 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package de.schkola.launcher;
 
-import de.schkola.launcher.dialog.ErrorHandler;
+import de.schkola.launcher.dialog.ErrorHandler.ErrorType;
 import de.schkola.launcher.dialog.ShutdownDialog;
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,10 +38,9 @@ public class Run {
      *
      * @param mode See 'RunMode'
      * @param command The command witch sould executed
-     * @param last Is this command the last?
      * @return TRUE = Executed | FALSE = NOT EXECUTED (ERROR)
      */
-    public static boolean run(RunMode mode, String command, boolean last) {
+    public static boolean run(RunMode mode, String command) {
         Runtime runtime = Runtime.getRuntime();
         switch (mode) {
             case COMMAND:
@@ -49,18 +48,23 @@ public class Run {
                     runtime.exec(command);
                     return true;
                 } catch (IOException ex) {
-                    if (last) {
-                        new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
-                    }
                     return false;
                 }
             case WEB:
                 try {
-                    runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe --user-data-dir=P:\\Opera -newtab " + command);
+                    if (new File("P:\\Opera").exists()) {
+                        runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe --user-data-dir=P:\\Opera -newtab " + command);
+                    } else {
+                        runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe -newtab " + command);
+                    }
                     return true;
                 } catch (IOException ex) {
                     try {
-                        runtime.exec(System.getenv("PROGRAMFILES") + "\\Opera\\launcher.exe --user-data-dir=P:\\Opera -newtab " + command);
+                        if (new File("P:\\Opera").exists()) {
+                            runtime.exec(System.getenv("PROGRAMFILES") + "\\Opera\\launcher.exe --user-data-dir=P:\\Opera -newtab " + command);
+                        } else {
+                            runtime.exec(System.getenv("PROGRAMFILES") + "\\Opera\\launcher.exe -newtab " + command);
+                        }
                         return true;
                     } catch (IOException ex1) {
                         try {
@@ -76,11 +80,9 @@ public class Run {
                                     desktop.browse(new URI(command));
                                     return true;
                                 } catch (URISyntaxException | IOException e) {
-                                    new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
                                     return false;
                                 }
                             }
-                            new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
                             return false;
                         }
                     }
@@ -90,7 +92,6 @@ public class Run {
                     runtime.exec("KIX32.EXE " + command);
                     return true;
                 } catch (IOException ex) {
-                    new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
                     return false;
                 }
             case SERVER:
@@ -98,9 +99,6 @@ public class Run {
                     runtime.exec(command);
                     return true;
                 } catch (IOException ex) {
-                    if (last) {
-                        new ErrorHandler(ErrorHandler.ErrorType.NO_CONNECTION);
-                    }
                     return false;
                 }
             case SHUTDOWN:
@@ -116,7 +114,6 @@ public class Run {
                         try {
                             runtime.exec(System.getenv("PROGRAMFILES") + "\\Microsoft Office\\Office\\" + command);
                         } catch (IOException ex3) {
-                            new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
                             return false;
                         }
                     }
@@ -132,7 +129,6 @@ public class Run {
                         try {
                             runtime.exec("libreoffice --" + command);
                         } catch (IOException ex3) {
-                            new ErrorHandler(ErrorHandler.ErrorType.NOT_AVAILABLE);
                             return false;
                         }
                     }
@@ -147,35 +143,45 @@ public class Run {
         /**
          * Opens an webpage
          */
-        WEB,
+        WEB(ErrorType.NOT_AVAILABLE),
         /**
          * Runs the given command
          */
-        COMMAND,
+        COMMAND(ErrorType.NOT_AVAILABLE),
         /**
          * Runs an KiXtart Script
          */
-        KIX,
+        KIX(ErrorType.NOT_AVAILABLE),
         /**
          * Runs an application from an server
          */
-        SERVER,
+        SERVER(ErrorType.NO_CONNECTION),
         /**
          * Runs an shutdown command in Windows
          */
-        SHUTDOWN,
+        SHUTDOWN(null),
         /**
          * Opens an 'Microsoft Office' application
          */
-        MSOFFICE,
+        MSOFFICE(ErrorType.NOT_AVAILABLE),
         /**
          * Open an 'OpenOffice' application
          */
-        OPENOFFICE,
+        OPENOFFICE(ErrorType.NOT_AVAILABLE),
         /**
          * Uses an ActionListener
          */
-        ACTION;
+        ACTION(null);
+
+        private final ErrorType errorType;
+
+        RunMode(ErrorType et) {
+            this.errorType = et;
+        }
+
+        public ErrorType getErrorType() {
+            return errorType;
+        }
     }
 
     public enum OfficeProg {

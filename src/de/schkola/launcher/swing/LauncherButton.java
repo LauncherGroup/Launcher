@@ -21,14 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package de.schkola.launcher.swing;
 
 import de.schkola.launcher.Launcher;
 import javax.swing.JButton;
 
 public class LauncherButton extends JButton {
-    
+
     public LauncherButton(String title) {
         super.setText(title);
         super.setForeground(Launcher.FOREGROUND);
