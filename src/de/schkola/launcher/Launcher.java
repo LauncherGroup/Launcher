@@ -25,26 +25,23 @@ package de.schkola.launcher;
 
 import de.schkola.launcher.Run.OfficeProg;
 import de.schkola.launcher.Run.RunMode;
-import de.schkola.launcher.dialog.Help;
-import de.schkola.launcher.dialog.Info;
-import de.schkola.launcher.swing.LauncherItem;
-import de.schkola.launcher.swing.LauncherMenu;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
+import de.schkola.launcher.javafx.AlertDialog;
+import de.schkola.launcher.javafx.LauncherItem;
+import de.schkola.launcher.javafx.LauncherMenu;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.MenuBar;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
-public class Launcher extends JFrame {
+public class Launcher extends Application {
 
-    private final JMenuBar menubar = new JMenuBar();
-    private static final String VERSION = "1.8.1";
-    private static final String DATE_LAST_MODIFIED = "Donnerstag, 05.01.2017";
-    public static final Color FOREGROUND = new Color(29, 62, 143); //#1D3E8F
-    public static final Color BACKGROUND = new Color(0, 177, 181); //#00B1B5
-    public static Font FONT_BIG = new Font("SanukPro", Font.PLAIN, 15);
-    public static Font FONT_SMALL = new Font("SanukPro", Font.PLAIN, 14);
+    private Stage stage;
+    private final MenuBar menubar = new MenuBar();
+    private static final String VERSION = "2.0.0";
+    private static final String DATE_LAST_MODIFIED = "Dienstag, 02.01.2018";
     private static Launcher instance = null;
     //Menupunkte - Toolbar
     private final LauncherMenu lernspiele = new LauncherMenu(" Lernspiele ", menubar);
@@ -73,17 +70,15 @@ public class Launcher extends JFrame {
     private final LauncherMenu m2ma = new LauncherMenu(" Mathematik ", lernprog);
     private final LauncherMenu m2ma_mathebits = new LauncherMenu(" Mathe Bits ", m2ma);
     //3
-    private final LauncherMenu m3office = new LauncherMenu(" OpenOffice ", prog);
+    private final LauncherMenu m3office = new LauncherMenu(" OpenOffice/LibreOffice ", prog);
     private final LauncherMenu m3micro = new LauncherMenu(" Microsoft Office ", prog);
     private final LauncherMenu m3image = new LauncherMenu(" Bildprogramme ", prog);
     private static Image logo = null;
 
-    public Launcher(boolean minimized) {
-        setupLogo();
-        setupMenuBar();
-        super.setIconImage(logo);
-        super.setJMenuBar(menubar);
-        super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    @Override
+    public void start(Stage stage) throws Exception {
+        instance = this;
+        this.stage = stage;
         //1
         new LauncherItem(" Geograficus ", m1geo, RunMode.COMMAND, true, "C:\\Program Files (x86)\\BrainGame\\Geograficus\\Geograficus.exe");
         new LauncherItem(" Informaticus ", m1info, RunMode.COMMAND, true, "C:\\Program Files (x86)\\BrainGame\\Informaticus\\Informaticus.exe");
@@ -144,35 +139,41 @@ public class Launcher extends JFrame {
         new LauncherItem(" Homeverzeichniss ", computer, RunMode.COMMAND, true, "explorer.exe P:");
         new LauncherItem(" Arbeitsplatz ", computer, RunMode.COMMAND, true, "explorer.exe /e", "nemo");
         //6
-        new LauncherItem(" \u00DCber ", about, false, (ae) -> new Info());
-        new LauncherItem(" Hilfe ", about, false, (ae) -> new Help());
+        new LauncherItem(" \u00DCber ", about, false, (ae) -> {
+            AlertDialog alert = new AlertDialog(AlertType.INFORMATION);
+            alert.setHeaderText("\u00DCber das Programm");
+            alert.setContentText("Dieses Programm wurde Programmiert von Niklas Merkelt.\r\nAktuelle Version: " + Launcher.getVersion() + "\r\nLetztes Update: " + Launcher.getDateLaftModified());
+            alert.show();
+        });
+        new LauncherItem(" Hilfe ", about, false, (ae) -> {
+            AlertDialog alert = new AlertDialog(AlertType.INFORMATION);
+            alert.setHeaderText("Hilfe");
+            alert.setContentText("Willkommen in der Hilfe vom Programm zur leichten Bedienung von PCs der Schkola Oberland!\r\nDieses Programm wurde speziell f\u00FCr die Schkola entwickelt und erm\u00F6glicht eine leichtere Bedienung des Computers. Oben im Men\u00FC kannst du die verschiedenen Programme, Nachschlagewerke, Spiele und Co. \u00F6ffnen.\r\nKlicke einfach auf eine der oben gezeigten Auswahlm\u00F6glichkeiten und suche dir das ben\u00F6tigte Fach aus, das klicke es dann an. Im folgenden Men\u00FC kannst du dann das Programm starten.\r\nWenn irgendwelche Fehler auftreten oder du eine Frage zu diesem Programm hast melde dich bitte per Lernsax bei Niklas Merkelt (mn1g@schkola.lernsax.de)\r\nWir w\u00FCnschen dir Viel Spa\u00DF und Erfolg mit unserem Programm. PU-Gruppe Launcher");
+            alert.show();
+        });
         new LauncherItem(" Minimieren ", about, true, (ae) -> minimize());
         new LauncherItem(" Beenden ", about, false, (ae) -> System.exit(0));
-        startupLauncher(minimized);
-    }
-
-    private void setupMenuBar() {
-        menubar.setFont(FONT_BIG);
-        menubar.setForeground(FOREGROUND);
-        menubar.setBackground(BACKGROUND);
+        startupLauncher();
     }
 
     private Image setupLogo() {
-        logo = Toolkit.getDefaultToolkit().getImage(Launcher.class.getResource("/de/schkola/launcher/res/icon.png"));
+        logo = new Image("de/schkola/launcher/res/icon.png");
         return logo;
     }
 
-    private void startupLauncher(boolean minimized) {
-        setTitle("Schkola Launcher | " + VERSION);
-        setSize(775, 20);
-        setLocation(0, 0);
-        setResizable(false);
-        setUndecorated(true);
-        setAlwaysOnTop(true);
-        if (minimized) {
-            setExtendedState(JFrame.ICONIFIED);
+    private void startupLauncher() {
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("Schkola Launcher " + VERSION);
+        stage.setResizable(false);
+        stage.setAlwaysOnTop(true);
+        stage.getIcons().add(getLogo());
+        if (getParameters().getUnnamed().contains("minimized")) {
+            minimize();
         }
-        setVisible(true);
+        stage.setX(0);
+        stage.setY(0);
+        stage.setScene(new Scene(menubar));
+        stage.show();
     }
 
     /**
@@ -181,11 +182,7 @@ public class Launcher extends JFrame {
      * @param args Commandline arguments
      */
     public static void main(String[] args) {
-        try {
-            instance = new Launcher(args[0].equals("minimized"));
-        } catch (Exception e) {
-            instance = new Launcher(false);
-        }
+        launch(args);
     }
 
     /**
@@ -194,7 +191,7 @@ public class Launcher extends JFrame {
      * @return
      */
     public static Launcher getInstance() {
-        return instance == null ? new Launcher(false) : instance;
+        return instance;
     }
 
     /**
@@ -228,6 +225,6 @@ public class Launcher extends JFrame {
      * Minimize the Launcher to the Taskbar
      */
     public void minimize() {
-        setExtendedState(ICONIFIED);
+        stage.setIconified(true);
     }
 }

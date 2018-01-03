@@ -21,23 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package de.schkola.launcher.swing;
+package de.schkola.launcher.javafx;
 
 import de.schkola.launcher.Launcher;
 import de.schkola.launcher.Run;
 import de.schkola.launcher.Run.RunMode;
-import de.schkola.launcher.dialog.ErrorHandler;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.JMenuItem;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 
-public class LauncherItem extends JMenuItem {
+public class LauncherItem extends MenuItem {
 
     private final List<String> commands = new ArrayList<>();
     private final RunMode mode;
-    private final JMenuItem parentItem;
     private final boolean shouldMinimized;
 
     /**
@@ -49,39 +51,33 @@ public class LauncherItem extends JMenuItem {
      * @param minimized Should the Launcher minimized after executing
      * @param command The commands that should executed
      */
-    public LauncherItem(String name, JMenuItem parent, RunMode runmode, boolean minimized, String... command) {
+    public LauncherItem(String name, Menu parent, RunMode runmode, boolean minimized, String... command) {
         super.setText(name);
-        super.setForeground(Launcher.FOREGROUND);
-        super.setFont(Launcher.FONT_BIG);
         commands.addAll(Arrays.asList(command));
         mode = runmode;
-        parentItem = parent;
         shouldMinimized = minimized;
-        parent.add(this);
-        super.addActionListener((w) -> {
+        parent.getItems().add(this);
+        super.setOnAction((w) -> {
             for (int i = 0; i < commands.size(); i++) {
                 if (Run.run(mode, commands.get(i))) {
                     if (shouldMinimized) {
                         Launcher.getInstance().minimize();
                     }
                     return;
-                } else if (i == commands.size() - 1) {
-                    new ErrorHandler(runmode.getErrorType());
+                } else if (i == commands.size() - 1 && runmode.getErrorType() != null) {
+                    new Alert(AlertType.ERROR, runmode.getErrorType().getMsg()).show();
                     return;
                 }
             }
         });
     }
 
-    public LauncherItem(String name, JMenuItem parent, boolean minimized, ActionListener al) {
+    public LauncherItem(String name, Menu parent, boolean minimized, EventHandler<ActionEvent> al) {
         super.setText(name);
-        super.setForeground(Launcher.FOREGROUND);
-        super.setFont(Launcher.FONT_BIG);
         mode = RunMode.ACTION;
-        parentItem = parent;
         shouldMinimized = minimized;
-        parent.add(this);
-        super.addActionListener(al);
+        parent.getItems().add(this);
+        super.setOnAction(al);
     }
 
     /**
@@ -107,8 +103,8 @@ public class LauncherItem extends JMenuItem {
      *
      * @return
      */
-    public JMenuItem getParentItem() {
-        return parentItem;
+    public Menu getParentItem() {
+        return this.getParentMenu();
     }
 
     /**

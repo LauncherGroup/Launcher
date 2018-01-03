@@ -23,13 +23,15 @@
  */
 package de.schkola.launcher;
 
-import de.schkola.launcher.dialog.ErrorHandler.ErrorType;
-import de.schkola.launcher.dialog.ShutdownDialog;
+import de.schkola.launcher.javafx.AlertDialog;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 public class Run {
 
@@ -51,8 +53,9 @@ public class Run {
                     return false;
                 }
             case WEB:
+                boolean server = new File("P:\\Opera").exists();
                 try {
-                    if (new File("P:\\Opera").exists()) {
+                    if (server) {
                         runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe --user-data-dir=P:\\Opera -newtab " + command);
                     } else {
                         runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Opera\\launcher.exe -newtab " + command);
@@ -60,7 +63,7 @@ public class Run {
                     return true;
                 } catch (IOException ex) {
                     try {
-                        if (new File("P:\\Opera").exists()) {
+                        if (server) {
                             runtime.exec(System.getenv("PROGRAMFILES") + "\\Opera\\launcher.exe --user-data-dir=P:\\Opera -newtab " + command);
                         } else {
                             runtime.exec(System.getenv("PROGRAMFILES") + "\\Opera\\launcher.exe -newtab " + command);
@@ -102,8 +105,23 @@ public class Run {
                     return false;
                 }
             case SHUTDOWN:
-                new ShutdownDialog(command);
-                break;
+                ShutdownAction action;
+                try {
+                    action = ShutdownAction.valueOf(command.toUpperCase());
+                } catch (IllegalArgumentException ignored) {
+                    return true;
+                }
+                AlertDialog alert = new AlertDialog(AlertType.CONFIRMATION);
+                alert.setContentText(action.getMsg());
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    try {
+                        runtime.exec(action.getCmd());
+                        System.exit(0);
+                    } catch (IOException ex) {
+                    }
+                }
+                return true;
             case MSOFFICE:
                 try {
                     runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\Microsoft Office\\Office\\" + command);
@@ -127,9 +145,17 @@ public class Run {
                         runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\OpenOffice 4\\program\\s" + command + ".exe");
                     } catch (IOException ex2) {
                         try {
-                            runtime.exec("libreoffice --" + command);
+                            runtime.exec(System.getenv("PROGRAMFILES") + "\\LibreOffice 5\\program\\s" + command + ".exe");
                         } catch (IOException ex3) {
-                            return false;
+                            try {
+                                runtime.exec(System.getenv("PROGRAMFILES") + " (x86)\\LibreOffice 5\\program\\s" + command + ".exe");
+                            } catch (IOException ex4) {
+                                try {
+                                    runtime.exec("libreoffice --" + command);
+                                } catch (IOException ex5) {
+                                    return false;
+                                }
+                            }
                         }
                     }
                 }

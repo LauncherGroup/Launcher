@@ -21,17 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package de.schkola.launcher.swing;
+package de.schkola.launcher.javafx;
 
-import de.schkola.launcher.Launcher;
-import javax.swing.JButton;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 
-public class LauncherButton extends JButton {
+public class LauncherMenu extends Menu {
 
-    public LauncherButton(String title) {
-        super.setText(title);
-        super.setForeground(Launcher.FOREGROUND);
-        super.setBackground(Launcher.BACKGROUND);
-        super.setFont(Launcher.FONT_BIG);
+    /**
+     * Add an new LauncherMenu
+     *
+     * @param name Displayed name of the Menu
+     * @param parent Parent element | wehre the menu should added
+     */
+    public LauncherMenu(String name, Menu parent) {
+        super.setText(name);
+        parent.getItems().add(this);
+    }
+    
+    /**
+     * Add an new LauncherMenu
+     *
+     * @param name Displayed name of the Menu
+     * @param parent Parent element | wehre the menu should added
+     */
+    public LauncherMenu(String name, MenuBar parent) {
+        super.setText(name);
+        parent.getMenus().add(this);
     }
 }
