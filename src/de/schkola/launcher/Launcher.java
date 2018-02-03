@@ -29,6 +29,8 @@ import de.schkola.launcher.javafx.AlertDialog;
 import de.schkola.launcher.javafx.LauncherItem;
 import de.schkola.launcher.javafx.LauncherMenu;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuBar;
@@ -167,6 +169,14 @@ public class Launcher extends Application {
         stage.setResizable(false);
         stage.setAlwaysOnTop(true);
         stage.getIcons().add(getLogo());
+        stage.iconifiedProperty().addListener((ObservableValue<? extends Boolean> prop, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                Platform.runLater(() -> {
+                    stage.hide();
+                    stage.show();
+                });
+            }
+        });
         if (getParameters().getUnnamed().contains("minimized")) {
             minimize();
         }
