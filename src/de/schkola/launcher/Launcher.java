@@ -42,8 +42,8 @@ public class Launcher extends Application {
 
     private Stage stage;
     private final MenuBar menubar = new MenuBar();
-    private static final String VERSION = "2.0.0";
-    private static final String DATE_LAST_MODIFIED = "Dienstag, 02.01.2018";
+    private static final String VERSION = "2.0.1";
+    private static final String DATE_LAST_MODIFIED = "Samstag, 03.02.2018";
     private static Launcher instance = null;
     //Menupunkte - Toolbar
     private final LauncherMenu lernspiele = new LauncherMenu(" Lernspiele ", menubar);
