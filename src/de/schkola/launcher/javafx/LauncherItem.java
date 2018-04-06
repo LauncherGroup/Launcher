@@ -40,27 +40,24 @@ public class LauncherItem extends MenuItem {
 
     private final List<String> commands = new ArrayList<>();
     private final RunMode mode;
-    private final boolean shouldMinimized;
-
+    
     /**
      * Add an new LauncherItem
      *
      * @param name Displayed name of the Menu
      * @param parent Parent element | wehre the menu should added
      * @param runmode See 'RunMode.java'
-     * @param minimized Should the Launcher minimized after executing
      * @param command The commands that should executed
      */
-    public LauncherItem(String name, Menu parent, RunMode runmode, boolean minimized, String... command) {
+    public LauncherItem(String name, Menu parent, RunMode runmode, String... command) {
         super.setText(name);
         commands.addAll(Arrays.asList(command));
         mode = runmode;
-        shouldMinimized = minimized;
         parent.getItems().add(this);
         super.setOnAction((w) -> {
             for (int i = 0; i < commands.size(); i++) {
                 if (Run.run(mode, commands.get(i))) {
-                    if (shouldMinimized) {
+                    if (getMinimized()) {
                         Launcher.getInstance().minimize();
                     }
                     return;
@@ -72,10 +69,9 @@ public class LauncherItem extends MenuItem {
         });
     }
 
-    public LauncherItem(String name, Menu parent, boolean minimized, EventHandler<ActionEvent> al) {
+    public LauncherItem(String name, Menu parent, EventHandler<ActionEvent> al) {
         super.setText(name);
         mode = RunMode.ACTION;
-        shouldMinimized = minimized;
         parent.getItems().add(this);
         super.setOnAction(al);
     }
@@ -132,6 +128,6 @@ public class LauncherItem extends MenuItem {
      * @return TRUE = Should minimized | FALSE = Shouldn't minimized
      */
     public boolean getMinimized() {
-        return shouldMinimized;
+        return mode.shouldMinimize();
     }
 }

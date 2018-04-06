@@ -197,16 +197,26 @@ public class Run {
         /**
          * Uses an ActionListener
          */
-        ACTION(null);
+        ACTION(null, false);
 
         private final ErrorType errorType;
+        private final boolean minimize;
 
         RunMode(ErrorType et) {
+            this(et, true);
+        }
+        
+        RunMode(ErrorType et, boolean minimize) {
             this.errorType = et;
+            this.minimize = minimize;
         }
 
         public ErrorType getErrorType() {
             return errorType;
+        }
+
+        public boolean shouldMinimize() {
+            return minimize;
         }
     }
 
